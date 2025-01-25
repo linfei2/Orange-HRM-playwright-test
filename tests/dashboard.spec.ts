@@ -6,4 +6,6 @@ test('Test auto login', async ({ page }) => {
 
   await page.goto('/');
   await expect(dashboardPage.userDropdownName).toBeVisible();
+  await dashboardPage.sideMenu.selectOption('PIM');
+  await page.waitForURL('**/viewEmployeeList');
 });
