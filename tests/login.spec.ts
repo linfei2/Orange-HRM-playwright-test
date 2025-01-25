@@ -1,18 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/login.spec';
-import { DashboardPage } from '../pages/dashboard.spec';
+import { LoginPage } from '../pages/login';
+import { DashboardPage } from '../pages/dashboard';
+
+const notAuthenticated = { cookies: [], origins: [] };
 
 test.describe('Login tests', async () => {
+  test.use({ storageState: notAuthenticated });
+
+  let loginPage: LoginPage;
   const validUsername = 'Admin';
   const validPassword = 'admin123';
   const loginFailMessage = 'Invalid credentials';
 
-  let loginPage: LoginPage;
-
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-
     await page.goto('/');
+    loginPage = new LoginPage(page);
   });
 
   test('login with valid credentials', async ({ page }) => {

@@ -30,7 +30,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
     launchOptions: {
-      slowMo: 1000,
+      // slowMo: 500,
     },
     headless: false,
   },
@@ -51,7 +51,6 @@ export default defineConfig({
       },
       dependencies: ['setup'],
     },
-
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
