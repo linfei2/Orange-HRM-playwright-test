@@ -1,27 +1,18 @@
-import { test, expect } from '@playwright/test';
-import { DashboardPage } from '../pages/dashboard';
-import { PimPage } from '../pages/pim';
+import { test, expect } from '../base.ts';
+import { PimPage } from '../pages/pim.ts';
 
 test.describe('PIM page tests', async () => {
-  let dashboardPage: DashboardPage;
-
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    dashboardPage = new DashboardPage(page);
-
+  test.beforeEach(async ({ dashboardPage }) => {
+    await dashboardPage.goTo();
     await expect(dashboardPage.userDropdownName).toBeVisible();
     await dashboardPage.sideMenu.selectOption('PIM');
   });
 
-  test('add employee', async ({ page }) => {
+  test('add employee', async ({ pimPage }) => {
     const employeeFirstName = 'Neville';
     const employeeLastName = 'Longbottom';
 
-    const pimPage = new PimPage(page);
-
     await pimPage.addEmployee(employeeFirstName, employeeLastName);
-    await page.waitForURL('**/viewPersonalDetails/**');
-
     await expect(pimPage.employeeCardName).toHaveText(
       `${employeeFirstName} ${employeeLastName}`,
     );

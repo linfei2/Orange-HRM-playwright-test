@@ -9,4 +9,8 @@ export class DashboardPage {
     this.sideMenu = new SideMenu(page);
     this.userDropdownName = this.page.locator('.oxd-userdropdown-name');
   }
+
+  async goTo(): Promise<void> {
+    await this.page.goto('/web/index.php/dashboard/index');
+  }
 }

@@ -1,20 +1,15 @@
-import { test as setup, expect } from '@playwright/test';
+import { test as setup, expect } from '../base.ts';
 import path from 'path';
-import { LoginPage } from '../pages/login';
-import { DashboardPage } from '../pages/dashboard';
 
 const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
-setup('authenticate', async ({ page }) => {
+setup('authenticate', async ({ page, loginPage, dashboardPage }) => {
   const username = 'Admin';
   const password = 'admin123';
-  const loginPage = new LoginPage(page);
-  const dashboardPage = new DashboardPage(page);
 
-  await page.goto('/');
+  await loginPage.goTo();
   await loginPage.login(username, password);
-
-  await page.waitForURL('**/dashboard/index');
   await expect(dashboardPage.userDropdownName).toBeVisible();
+  
   await page.context().storageState({ path: authFile });
 });

@@ -20,5 +20,6 @@ export class PimPage {
     await this.firstNameInput.fill(firstName);
     await this.lastNameInput.fill(lastName);
     await this.saveButton.click();
+    await this.page.waitForURL('**/viewPersonalDetails/**');
   }
 }
