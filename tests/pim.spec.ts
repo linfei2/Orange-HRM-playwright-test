@@ -1,20 +1,29 @@
 import { test, expect } from '../base.ts';
-import { PimPage } from '../pages/pim.ts';
 
 test.describe('PIM page tests', async () => {
+  const employeeFirstName = 'Neville';
+  const employeeLastName = 'Longbottom';
+  const employeeFullName = `${employeeFirstName} ${employeeLastName}`;
+
   test.beforeEach(async ({ dashboardPage }) => {
     await dashboardPage.goTo();
-    await expect(dashboardPage.userDropdownName).toBeVisible();
     await dashboardPage.sideMenu.selectOption('PIM');
   });
 
   test('add employee', async ({ pimPage }) => {
-    const employeeFirstName = 'Neville';
-    const employeeLastName = 'Longbottom';
-
     await pimPage.addEmployee(employeeFirstName, employeeLastName);
-    await expect(pimPage.employeeCardName).toHaveText(
-      `${employeeFirstName} ${employeeLastName}`,
-    );
+    await expect(pimPage.employeeCardName).toHaveText(employeeFullName);
   });
+
+  test('search for employee and edit personal details', async ({ pimPage }) => {
+    const driverLicenseNumber = '12345';
+
+    await pimPage.searchEmployeeInformation(employeeFullName);
+    expect(pimPage.employeeRecord).toContainText(employeeFullName);
+
+    await pimPage.openEmployeeEdit();
+    await pimPage.editDriversLicenseNumber(driverLicenseNumber);
+    await pimPage.savePersonalDetails();
+    expect(pimPage.driverLicenseInput).toHaveValue(driverLicenseNumber);
+  })
 });
